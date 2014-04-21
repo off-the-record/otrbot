@@ -39,81 +39,13 @@ class TicketConfig:
 
     def __init__(self):
         self.providers = {}
-        self.providers['trac.torproject.org'] = h.TicketHtmlTitleProvider(
-            'https://trac.torproject.org/projects/tor/ticket/',
-            h.ReGroupFixup('.*?\((.*)\).*? Tor Bug Tracker & Wiki$'),
-            'tor',
-            r'(?<!\w)(?:[tT]or#|https://trac.torproject.org/projects/tor/ticket/)([0-9]{4,})(?:(?=\W)|$)'
-            )
-        self.providers['proposal.torproject.org'] = h.TorProposalProvider(
-            fixup=lambda i,x: "Prop#%s: %s"%(i,x) )
-        self.providers['github.com-tor-ooni-probe-pull'] = h.TicketHtmlTitleProvider(
-            'https://github.com/TheTorProject/ooni-probe/pull/',
-            h.ReGroupFixup('.*?(.*) . Pull Request #[0-9]+ . TheTorProject/ooni-probe . GitHub$'),
-            'github-OONI-PR'
-            )
-        self.providers['bugs.debian.org'] = h.TicketHtmlTitleProvider(
-            'http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=',
-            h.ReGroupFixup('#[0-9]+ - (.*) - Debian Bug report logs$'),
-            'Debian',
-            r'(?i)(?<!\w)Deb(?:ian)?#([0-9]{3,})(?:(?=\W)|$)'
-            )
-        self.providers['rt.debian.org'] = h.TicketRTProvider(
-            '~/.rtrc-debian',
-            h.ReGroupFixup('[0-9]+: *(.*)$'),
-            'DebianRT',
-            )
-        self.providers['bts.grml.org'] = h.TicketHtmlTitleProvider(
-            'http://bts.grml.org/grml/issue',
-            h.ReGroupFixup('Issue [0-9]+: (.*) - GRML issue tracker$'),
-            'GRML'
-            )
-        self.providers['munin-monitoring.org'] = h.TicketHtmlTitleProvider(
-            'http://munin-monitoring.org/ticket/',
-            h.ReGroupFixup('.*?\((.*)\).*? Munin$'),
-            'munin'
-            )
-        self.providers['launchpad.net/ubuntu'] = h.TicketHtmlTitleProvider(
-            'https://bugs.launchpad.net/ubuntu/+bug/',
-            h.ReGroupFixup('Bug #[0-9]+ .(.*). : Bugs :'),
-            'ubuntu'
-            )
-        self.providers['bugzilla.redhat.com'] = h.TicketHtmlTitleProvider(
-            'https://bugzilla.redhat.com/show_bug.cgi?id=',
-            h.ReGroupFixup('Bug [0-9]+ . (.*)$'),
-            'redhat'
-            )
-        self.providers['labs.riseup.net'] = h.TicketHtmlTitleProvider(
-            'https://labs.riseup.net/code/issues/',
-            h.ReGroupFixup('[^#]+#[0-9]+: (.*) - RiseupLabs Code Repository$'),
-            'Tails'
-            )
+        self.providers['otr.im-libotr'] = h.TicketHtmlTitleProvider(
+            'https://bugs.otr.im/issues/',
+            h.ReGroupFixup('[^#]+#[0-9]+: (.*) - libotr - Off-the-Record Messaging$'),
+            'otr.im '
+        )
 
         self.channels = {}
-        for tor in ('#ooni', '#nottor', '#tor-dev', '#tor', '#tor-www', '#tor-project'):
-            self._add(tor, '(?<!\w)#([0-9]{4,})(?:(?=\W)|$)', self.providers['trac.torproject.org'])
-            self._add(tor, '(?<!\w)[Pp]rop#([0-9]+)(?:(?=\W)|$)', self.providers['proposal.torproject.org'])
-
-        self._add('#ooni', '(?<!\w)(?:PR#|https://github.com/TheTorProject/ooni-probe/pull/)([0-9]+)(?:(?=\W)|$)', self.providers['github.com-tor-ooni-probe-pull'])
-
-        self._add('#munin', '(?<!\w)[dD]#([0-9]{4,})(?:(?=\W)|$)', self.providers['bugs.debian.org'])
-        self._add('#munin', '(?<!\w)[uU]#([0-9]{4,})(?:(?=\W)|$)', self.providers['launchpad.net/ubuntu'])
-        self._add('#munin', '(?<!\w)[rR]#([0-9]{4,})(?:(?=\W)|$)', self.providers['bugzilla.redhat.com'])
-        self._add('#munin', '(?<!\w)#([0-9]{4,})(?:(?=\W)|$)', self.providers['munin-monitoring.org'])
-
-        for tails in ('#tails', '#tails-dev'):
-            self._add(tails, '(?<!\w)(?:#|https://labs.riseup.net/code/issues/)([0-9]{4,})(?:(?=\W)|$)', self.providers['labs.riseup.net'])
-            self._add(tails, None, self.providers['trac.torproject.org'])
-            self._add(tails, None, self.providers['bugs.debian.org'])
-
-        self._add('#tor-test', '(?<!\w)[dD]#([0-9]{4,})(?:(?=\W)|$)', self.providers['bugs.debian.org'])
-        self._add('#tor-test', '(?<!\w)#([0-9]{4,})(?:(?=\W)|$)', self.providers['munin-monitoring.org'])
-        self._add('#tor-test', None, self.providers['trac.torproject.org'])
-
-        self._add('#grml', '(?<!\w)(?:[gG]|issue)([0-9]{4,})(?:(?=\W)|$)', self.providers['bts.grml.org'])
-
-        # debian
-        for ch in ('#debian-perl', '#grml', '#debian-qa'):
-            self._add(ch,        '(?<!\w)#([0-9]{4,})(?:(?=\W)|$)', self.providers['bugs.debian.org'])
+        self._add('#otr-org', '(?<!\w)(?:#|https://bugs.otr.im/issues/)([0-9]{1,})(?:(?=\W)|$)', self.providers['otr.im-libotr'])
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab:
