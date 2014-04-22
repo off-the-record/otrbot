@@ -46,6 +46,6 @@ class TicketConfig:
         )
 
         self.channels = {}
-        self._add('#otr-org', '(?<!\w)(?:#|https://bugs.otr.im/issues/)([0-9]{1,})(?:(?=\W)|$)', self.providers['otr.im-libotr'])
+        self._add('#otr', '(?<!\w)(?:#|https://bugs.otr.im/issues/)([0-9]{1,})(?:(?=\W)|$)', self.providers['otr.im-libotr'])
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab:
